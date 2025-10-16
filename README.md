@@ -61,6 +61,7 @@ _Search results with bitrate, codec, country, and tags_
     <img src="https://img.shields.io/badge/Download_for-ARM64_Windows-0078d4?style=for-the-badge&logo=windows&logoColor=white" alt="Download ARM64">
   </a>
 </div>
+
 ---
 
 ## 🎨 Plugin Icons
