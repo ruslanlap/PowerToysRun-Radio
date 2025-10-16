@@ -125,7 +125,7 @@ The plugin automatically adapts to your PowerToys theme:
 <sub>Search by name, city,<br>country, or genre</sub>
 </td>
 <td align="center" width="33%">
-<img width="60" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Globe%20showing%20Europe-Africa/3D/globe_showing_europe-africa_3d.png">
+<img width="60" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Globe%20with%20meridians/3D/globe_with_meridians_3d.png">
 <br><b>🌍 30,000+ Stations</b><br>
 <sub>Radio stations from<br>all over the world</sub>
 </td>
@@ -257,29 +257,29 @@ Right-click PowerToys icon → Exit → Launch from Start menu
 <table>
 <tr>
 <td align="center" width="25%">
-<img width="50" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Flag%20Ukraine/Flat/flag_ukraine_flat.png">
-<br><b>By Country</b>
+<img width="60" height="60" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Globe%20with%20meridians/3D/globe_with_meridians_3d.png">
+<br><b>🌍 By Country</b>
 <br><code>radio ukraine</code>
 <br><code>radio germany</code>
 <br><code>radio france</code>
 </td>
 <td align="center" width="25%">
-<img width="50" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Cityscape/Flat/cityscape_flat.png">
-<br><b>By City</b>
+<img width="60" height="60" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Cityscape/3D/cityscape_3d.png">
+<br><b>🏙️ By City</b>
 <br><code>radio london</code>
 <br><code>radio paris</code>
 <br><code>radio new york</code>
 </td>
 <td align="center" width="25%">
-<img width="50" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Radio/Flat/radio_flat.png">
-<br><b>By Station</b>
+<img width="60" height="60" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Radio/3D/radio_3d.png">
+<br><b>📻 By Station</b>
 <br><code>radio bbc</code>
 <br><code>radio npr</code>
 <br><code>radio europa</code>
 </td>
 <td align="center" width="25%">
-<img width="50" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Musical%20note/Flat/musical_note_flat.png">
-<br><b>By Genre</b>
+<img width="60" height="60" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Musical%20notes/3D/musical_notes_3d.png">
+<br><b>🎵 By Genre</b>
 <br><code>radio jazz</code>
 <br><code>radio rock</code>
 <br><code>radio classical</code>
@@ -356,21 +356,6 @@ radio [very long text over 200 characters...]  # Too long
 
 <div align="center">
 
-### 🔄 How It Works
-
-```mermaid
-graph LR
-    A[User types 'radio london'] --> B[PowerToys Run]
-    B --> C[Radio Plugin]
-    C --> D[Mirror Discovery]
-    D --> E[Radio Browser API]
-    E --> F[5+ API Mirrors]
-    F --> G[Station Results]
-    G --> H[Display Results]
-    H --> I[User selects station]
-    I --> J[Media Player]
-```
-
 **Plugin Flow:**
 
 1. 🔍 User enters search query
@@ -389,49 +374,6 @@ graph LR
 - **API**: Radio Browser API with multiple mirror support
 - **Architecture**: Service-oriented with Models/Services/Core separation
 - **Logging**: Comprehensive logging for diagnostics
-
-### 🎯 Project Highlights
-
-<div align="center">
-
-<table>
-<tr>
-<td align="center">
-<img width="40" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Check%20mark%20button/Flat/check_mark_button_flat.png">
-<br><b>Test Coverage</b>
-<br>Full unit test coverage
-</td>
-<td align="center">
-<img width="40" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Building%20construction/Flat/building_construction_flat.png">
-<br><b>Clean Architecture</b>
-<br>Well-separated responsibilities
-</td>
-<td align="center">
-<img width="40" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Desktop%20computer/Flat/desktop_computer_flat.png">
-<br><b>Multi-Platform</b>
-<br>x64 + ARM64 builds
-</td>
-</tr>
-<tr>
-<td align="center">
-<img width="40" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/High%20voltage/Flat/high_voltage_flat.png">
-<br><b>High Availability</b>
-<br>5+ API mirrors with failover
-</td>
-<td align="center">
-<img width="40" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Rocket/Flat/rocket_flat.png">
-<br><b>Performance</b>
-<br>&lt;100MB memory, fast
-</td>
-<td align="center">
-<img width="40" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Globe%20with%20meridians/Flat/globe_with_meridians_flat.png">
-<br><b>30,000+ Stations</b>
-<br>Worldwide coverage
-</td>
-</tr>
-</table>
-
-</div>
 
 ### 📁 Project Structure
 
