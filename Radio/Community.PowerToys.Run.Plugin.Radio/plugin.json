@@ -1,0 +1,15 @@
+{
+  "ID": "0CF5D160821B4F01A24D08E459AF3DC8",
+  "ActionKeyword": "radio",
+  "IsGlobal": false,
+  "Name": "Radio",
+  "Author": "ruslanlap",
+  "Version": "1.0.0",
+  "Language": "csharp",
+  "Website": "https://github.com/ruslanlap/PowerToysRun-Radio",
+  "ExecuteFileName": "Community.PowerToys.Run.Plugin.Radio.dll",
+  "IcoPathDark": "Images\\radio.dark.png",
+  "IcoPathLight": "Images\\radio.light.png",
+  "DynamicLoading": true,
+  "Description": "Search and play internet radio stations by city or genre using Radio Browser API"
+}

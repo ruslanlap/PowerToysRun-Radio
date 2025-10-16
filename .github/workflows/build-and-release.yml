@@ -1,0 +1,333 @@
+name: Build and Release Radio Plugin
+
+on:
+  push:
+    # branches:
+    #   - master
+    tags:
+      - 'v*'
+
+# Permissions for GITHUB_TOKEN (principle of least privilege)
+permissions:
+  contents: write  # Needed for creating releases
+  issues: read
+  pull-requests: read
+
+# Add restrictions for parallel runs
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        platform: [x64, ARM64]
+      fail-fast: false # Continue with other platforms if one fails
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1 # Shallow clone for faster checkout
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      # Add caching for NuGet packages
+      - name: Cache NuGet packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      # Restore dependencies separately for better caching
+      - name: Restore dependencies
+        run: dotnet restore Radio/Radio.sln -p:Platform="${{ matrix.platform }}"
+
+      # Build with optimized settings
+      - name: Build
+        run: dotnet build Radio/Radio.sln -c Release -p:Platform="${{ matrix.platform }}" --no-restore
+
+      - name: Get version
+        id: get_version
+        shell: bash
+        run: |
+          if [[ $GITHUB_REF == refs/tags/v* ]]; then
+            echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+            echo "IS_TAG=true" >> $GITHUB_OUTPUT
+          else
+            echo "VERSION=$(date +'%Y.%m.%d')-$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
+            echo "IS_TAG=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Debug Output
+        run: |
+          Get-ChildItem -Path "Radio" -Recurse -Directory | Where-Object { $_.Name -eq "Release" } | ForEach-Object { Write-Host $_.FullName }
+        shell: pwsh
+
+      - name: Create output directory
+        run: mkdir -p artifacts
+
+      - name: Copy build output to artifacts directory
+        run: |
+          # Define paths upfront for better performance
+          $artifactDir = "artifacts/Radio-v${{ steps.get_version.outputs.VERSION }}-${{ matrix.platform }}"
+          $buildOutput = "Radio/Community.PowerToys.Run.Plugin.Radio/bin/${{ matrix.platform }}/Release"
+          $runtimeFolder = "$buildOutput/net9.0-windows10.0.22621.0"
+
+          # Create directories in a single operation
+          New-Item -ItemType Directory -Force -Path "$artifactDir/Radio"
+
+          # Fast path: Try direct copy from the expected runtime folder
+          if (Test-Path $runtimeFolder) {
+            Write-Host "Using fast path: Copying from known runtime folder"
+            Copy-Item -Path "$runtimeFolder/*" -Destination "$artifactDir/Radio" -Recurse -Force
+          } else {
+            # Fallback: Use optimized search logic
+            Write-Host "Fast path not available, using fallback path"
+            if (Test-Path $buildOutput) {
+              # Check for files directly in the build output directory
+              $files = Get-ChildItem -Path $buildOutput -File
+              if ($files.Count -gt 0) {
+                Copy-Item -Path "$buildOutput/*" -Destination "$artifactDir/Radio" -Recurse -Force
+              } else {
+                # Look for a .NET runtime folder
+                $runtimeFolder = Get-ChildItem -Path $buildOutput -Directory |
+                                 Where-Object { $_.Name -like "net*-windows*" } |
+                                 Select-Object -First 1 -ExpandProperty FullName
+
+                if ($runtimeFolder) {
+                  Copy-Item -Path "$runtimeFolder/*" -Destination "$artifactDir/Radio" -Recurse -Force
+                } else {
+                  # Last resort: check for any subdirectories
+                  $subDir = Get-ChildItem -Path $buildOutput -Directory | Select-Object -First 1 -ExpandProperty FullName
+                  if ($subDir) {
+                    Copy-Item -Path "$subDir/*" -Destination "$artifactDir/Radio" -Recurse -Force
+                  } else {
+                    Write-Error "No files or subdirectories found in build output directory"
+                    exit 1
+                  }
+                }
+              }
+            } else {
+              Write-Error "Build output directory not found at $buildOutput"
+              exit 1
+            }
+          }
+
+          # Copy Images folder directly to the destination
+          $imagesSrc = "Radio/Community.PowerToys.Run.Plugin.Radio/Images"
+          if (Test-Path $imagesSrc) {
+            Copy-Item -Path $imagesSrc -Destination "$artifactDir/Radio/Images" -Recurse -Force
+          }
+
+          # Remove unnecessary files in a single operation
+          $unnecessaryFiles = @(
+            "PowerToys.Common.UI.dll",
+            "PowerToys.ManagedCommon.dll",
+            "PowerToys.Settings.UI.Lib.dll",
+            "Wox.Infrastructure.dll",
+            "Wox.Plugin.dll",
+            "PowerToys.Common.UI.pdb",
+            "PowerToys.ManagedCommon.pdb",
+            "PowerToys.Settings.UI.Lib.pdb",
+            "Wox.Infrastructure.pdb",
+            "Wox.Plugin.pdb"
+          )
+
+          foreach ($file in $unnecessaryFiles) {
+            $filePath = "$artifactDir/Radio/$file"
+            if (Test-Path $filePath) {
+              Remove-Item $filePath -Force
+            }
+          }
+        shell: pwsh
+
+      - name: Create ZIP archive
+        run: |
+          $artifactDir = "artifacts/Radio-v${{ steps.get_version.outputs.VERSION }}-${{ matrix.platform }}"
+          $zipName = "Radio-${{ steps.get_version.outputs.VERSION }}-${{ matrix.platform }}.zip"
+          # Create ZIP with Radio folder inside
+          Compress-Archive -Path "$artifactDir/Radio" -DestinationPath "artifacts/$zipName"
+        shell: pwsh
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts-${{ matrix.platform }}
+          path: artifacts/*.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1 # Shallow clone for faster checkout
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: downloaded-artifacts
+          merge-multiple: true # Merge artifacts with the same name
+
+      - name: Prepare artifacts for release
+        run: |
+          mkdir -p release-artifacts
+          VERSION="${{ steps.get_version.outputs.VERSION }}"
+
+          # Fast copy with error handling
+          find downloaded-artifacts -name "Radio-${VERSION}-x64.zip" -exec cp {} release-artifacts/ \;
+          find downloaded-artifacts -name "Radio-${VERSION}-ARM64.zip" -exec cp {} release-artifacts/ \;
+
+          # Verify artifacts were copied
+          if [ ! -f "release-artifacts/Radio-${VERSION}-x64.zip" ]; then
+            echo "Error: x64 artifact not found"
+            exit 1
+          fi
+
+          if [ ! -f "release-artifacts/Radio-${VERSION}-ARM64.zip" ]; then
+            echo "Error: ARM64 artifact not found"
+            exit 1
+          fi
+
+      - name: Prepare Release Notes
+        id: release_notes
+        run: |
+          VERSION="${{ steps.get_version.outputs.VERSION }}"
+          cat > release_notes.md << EOL
+          # Radio Plugin v${VERSION}
+
+          <img src="https://raw.githubusercontent.com/ruslanlap/PowerToysRun-Radio/master/assets/radio_logo.png" alt="Radio Plugin Logo" width="64"/>
+
+          ## 📻 What's New in v${VERSION}
+
+          ### ✨ Features:
+          - **Instant Search** - Search 30,000+ radio stations directly from PowerToys Run
+          - **Smart Search** - Search by station name, city, country, or genre
+          - **Rich Metadata** - View bitrate, codec, country, and tags for each station
+          - **High Availability** - Automatic failover with 5+ Radio Browser API mirrors
+          - **One-Click Playback** - Press Enter to play in your default media player
+          - **Context Menu** - Copy URL, open in browser, or add to favorites
+          - **Favorites Support** - Save your favorite stations for quick access
+
+          ### 🔧 Technical Details:
+          - Built with .NET 9.0 targeting Windows 10.0.22621.0+
+          - Radio Browser API with multi-mirror failover support
+          - Theme-aware UI with automatic light/dark mode support
+          - Comprehensive logging for diagnostics
+          - <100MB memory footprint
+
+          ## 📥 Installation
+
+          1. **Download** the ZIP file for your platform (x64 or ARM64)
+          2. **Extract** to \`%LOCALAPPDATA%\\Microsoft\\PowerToys\\PowerToys Run\\Plugins\\Radio\\\`
+
+             Full path example:
+             \`\`\`
+             C:\\Users\\YourName\\AppData\\Local\\Microsoft\\PowerToys\\PowerToys Run\\Plugins\\Radio\\
+             \`\`\`
+          3. **Restart PowerToys** (Right-click tray icon → Exit → Start again)
+          4. **Try it!** Press \`Alt+Space\`, type \`radio london\`
+
+          ## 📊 Usage Examples
+
+          \`\`\`
+          radio lviv                     # 🇺🇦 Ukrainian stations
+          radio bbc                      # 🌍 BBC Radio
+          radio jazz                     # 🎵 Jazz stations
+          radio france                   # 🇫🇷 French stations
+          radio new york                 # 🗽 New York stations
+          radio classical                # 🎻 Classical music
+          \`\`\`
+
+          ### Actions:
+          - **Enter** - Play station in default media player
+          - **Ctrl+C** - Copy stream URL to clipboard
+          - **Right-click** - Show context menu with more options
+
+          ## 🔒 Security & Privacy
+
+          - ✅ 100% local storage
+          - ✅ No tracking or telemetry
+          - ✅ Open source code
+          - ✅ Privacy-first design
+
+          ## 🆘 Troubleshooting
+
+          **Plugin not showing up?**
+          - Check path: \`%LOCALAPPDATA%\\Microsoft\\PowerToys\\PowerToys Run\\Plugins\\Radio\`
+          - Ensure plugin.json and DLL files exist
+          - Restart PowerToys completely
+
+          **No search results?**
+          - Check internet connection (required for API)
+          - Try different search terms (use English names)
+          - Wait 2-3 seconds for first search
+
+          **Stations not playing?**
+          - Install a media player (VLC, Windows Media Player)
+          - Try different stations (some might be offline)
+          - Copy URL and test in browser
+
+          **Logs:** \`%LOCALAPPDATA%\\Microsoft\\PowerToys\\PowerToys Run\\Plugins\\Radio\\log.txt\`
+
+          ---
+
+          **Need Help?** [Open an issue](https://github.com/ruslanlap/PowerToysRun-Radio/issues) • [View Documentation](https://github.com/ruslanlap/PowerToysRun-Radio#readme)
+
+          Made with ❤️ by [ruslanlap](https://github.com/ruslanlap)
+          EOL
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_OUTPUT
+          cat release_notes.md >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Generate SHA256 checksums
+        run: |
+          cd release-artifacts
+          VERSION="${{ steps.get_version.outputs.VERSION }}"
+
+          # Generate checksums in parallel
+          {
+            sha256sum Radio-${VERSION}-x64.zip | tr 'a-f' 'A-F' > Radio-${VERSION}-x64.zip.sha256 &
+            sha256sum Radio-${VERSION}-ARM64.zip | tr 'a-f' 'A-F' > Radio-${VERSION}-ARM64.zip.sha256 &
+            wait
+          }
+
+          # Create combined checksums file efficiently
+          {
+            echo "SHA256 Checksums for Radio Plugin v${VERSION}"
+            echo "Generated on: $(date -u)"
+            echo ""
+            cat Radio-${VERSION}-x64.zip.sha256
+            cat Radio-${VERSION}-ARM64.zip.sha256
+          } > checksums.txt
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: PowerToysRun-Radio v${{ steps.get_version.outputs.VERSION }}
+          body: ${{ steps.release_notes.outputs.RELEASE_NOTES }}
+          draft: false
+          prerelease: false
+          files: |
+            release-artifacts/Radio-${{ steps.get_version.outputs.VERSION }}-x64.zip
+            release-artifacts/Radio-${{ steps.get_version.outputs.VERSION }}-ARM64.zip
+            release-artifacts/Radio-${{ steps.get_version.outputs.VERSION }}-x64.zip.sha256
+            release-artifacts/Radio-${{ steps.get_version.outputs.VERSION }}-ARM64.zip.sha256
+            release-artifacts/checksums.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
