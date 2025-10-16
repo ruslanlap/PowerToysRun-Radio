@@ -54,6 +54,11 @@ jobs:
       - name: Build
         run: dotnet build Radio/Radio.sln -c Release -p:Platform="${{ matrix.platform }}" --no-restore
 
+      # Run tests (optional - comment out if tests are not ready)
+      - name: Run tests
+        run: dotnet test Radio/Radio.sln -c Release -p:Platform="${{ matrix.platform }}" --no-build --verbosity normal
+        continue-on-error: false  # Set to true to allow build to continue even if tests fail
+
       - name: Get version
         id: get_version
         shell: bash
