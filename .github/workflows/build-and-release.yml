@@ -133,28 +133,27 @@ jobs:
                     Copy-Item -Path $imagesSrc -Destination "$artifactDir/Radio/Images" -Recurse -Force
                   }
 
-                  # Remove unnecessary PowerToys dependencies (provided by PowerToys runtime)
-                  Write-Host "Cleaning up unnecessary dependencies..."
-                  $unnecessaryPatterns = @(
-                    "PowerToys.Common.UI.*",
-                    "PowerToys.ManagedCommon.*",
-                    "PowerToys.Settings.UI.Lib.*",
-                    "Wox.Infrastructure.*",
-                    "Wox.Plugin.*",
-                    "Microsoft.Windows.SDK.NET.*",
-                    "WinRT.Runtime.*"
+                  # Remove unnecessary files (provided by PowerToys runtime)
+                  $unnecessaryFiles = @(
+                    "PowerToys.Common.UI.dll",
+                    "PowerToys.ManagedCommon.dll",
+                    "PowerToys.Settings.UI.Lib.dll",
+                    "Wox.Infrastructure.dll",
+                    "Wox.Plugin.dll",
+                    "PowerToys.Common.UI.pdb",
+                    "PowerToys.ManagedCommon.pdb",
+                    "PowerToys.Settings.UI.Lib.pdb",
+                    "Wox.Infrastructure.pdb",
+                    "Wox.Plugin.pdb"
                   )
 
-                  foreach ($pattern in $unnecessaryPatterns) {
-                    Get-ChildItem -Path "$artifactDir/Radio" -Filter $pattern -File -ErrorAction SilentlyContinue | ForEach-Object {
-                      Write-Host "Removing: $($_.Name)"
-                      Remove-Item $_.FullName -Force
+                  foreach ($file in $unnecessaryFiles) {
+                    $filePath = "$artifactDir/Radio/$file"
+                    if (Test-Path $filePath) {
+                      Remove-Item $filePath -Force
+                      Write-Host "Removed: $file"
                     }
                   }
-
-                  # Verify cleanup
-                  Write-Host "Files after cleanup:"
-                  Get-ChildItem -Path "$artifactDir/Radio" -File | Select-Object -ExpandProperty Name
               shell: pwsh
 
             - name: Create ZIP archive
