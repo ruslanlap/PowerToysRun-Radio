@@ -4,6 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 .gitignore
 gitignore
+GEMINI.md
 .zed
 /.zed
 # User-specific files
