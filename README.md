@@ -9,8 +9,8 @@
 **Stop switching to your browser to find radio streams.**
 Search and play radio stations directly from PowerToys Run → `Alt+Space` → `radio london` → Done! ✨
 
-[![Latest Release](https://img.shields.io/github/v/release/ruslanlap/PowerToysRun-Radio?style=for-the-badge&logo=github&color=blue)](https://github.com/ruslanlap/PowerToysRun-Radio/releases/latest)
-[![Total Downloads](https://img.shields.io/github/downloads/ruslanlap/PowerToysRun-Radio/total?style=for-the-badge&logo=download&color=green)](https://github.com/ruslanlap/PowerToysRun-Radio/releases/latest)
+[![Latest Release](https://img.shields.io/github/v/release/ruslanlap/PowerToysRun-Radio?style=for-the-badge&logo=github&color=b5ff3f)](https://github.com/ruslanlap/PowerToysRun-Radio/releases/latest)
+[![Total Downloads](https://img.shields.io/github/downloads/ruslanlap/PowerToysRun-Radio/total?style=for-the-badge&logo=download&color=b5ff3f)](https://github.com/ruslanlap/PowerToysRun-Radio/releases/latest)
 [![GitHub Stars](https://img.shields.io/github/stars/ruslanlap/PowerToysRun-Radio?style=for-the-badge&logo=star&color=b5ff3f)](https://github.com/ruslanlap/PowerToysRun-Radio/stargazers)
 [![Awesome PowerToys](https://awesome.re/mentioned-badge-flat.svg)](https://github.com/hlaueriksson/awesome-powertoys-run-plugins)
 
