@@ -144,7 +144,9 @@ jobs:
                     "PowerToys.ManagedCommon.pdb",
                     "PowerToys.Settings.UI.Lib.pdb",
                     "Wox.Infrastructure.pdb",
-                    "Wox.Plugin.pdb"
+                    "Wox.Plugin.pdb",
+                    "Microsoft.Windows.SDK.NET.dll",
+                    "WinRT.Runtime.dll"
                   )
 
                   foreach ($file in $unnecessaryFiles) {
