@@ -2,9 +2,6 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 
-using System.IO;
-using System.Text.RegularExpressions;
-
 namespace Community.PowerToys.Run.Plugin.Radio.Logging
 {
     /// <summary>
