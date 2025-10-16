@@ -16,11 +16,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Community.PowerToys.Run.Plugin.Dependencies" Version="0.93.0">
-      <PrivateAssets>all</PrivateAssets>
-      <ExcludeAssets>runtime</ExcludeAssets>
-    </PackageReference>
+    <PackageReference Include="Community.PowerToys.Run.Plugin.Dependencies" Version="0.93.0" />
   </ItemGroup>
+
+  <!-- Exclude PowerToys dependencies from being copied to output (they're provided by PowerToys runtime) -->
+  <Target Name="RemovePowerToysDependencies" AfterTargets="Build">
+    <ItemGroup>
+      <FilesToDelete Include="$(OutputPath)\PowerToys.*.dll" />
+      <FilesToDelete Include="$(OutputPath)\Wox.*.dll" />
+      <FilesToDelete Include="$(OutputPath)\PowerToys.*.pdb" />
+      <FilesToDelete Include="$(OutputPath)\Wox.*.pdb" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+    <Message Text="Removed PowerToys runtime dependencies from output" Importance="high" />
+  </Target>
 
   <ItemGroup>
     <None Include="plugin.json">

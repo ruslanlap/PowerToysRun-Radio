@@ -133,26 +133,18 @@ jobs:
                     Copy-Item -Path $imagesSrc -Destination "$artifactDir/Radio/Images" -Recurse -Force
                   }
 
-                  # Remove unnecessary files (provided by PowerToys runtime)
-                  $unnecessaryFiles = @(
-                    "PowerToys.Common.UI.dll",
-                    "PowerToys.ManagedCommon.dll",
-                    "PowerToys.Settings.UI.Lib.dll",
-                    "Wox.Infrastructure.dll",
-                    "Wox.Plugin.dll",
-                    "PowerToys.Common.UI.pdb",
-                    "PowerToys.ManagedCommon.pdb",
-                    "PowerToys.Settings.UI.Lib.pdb",
-                    "Wox.Infrastructure.pdb",
-                    "Wox.Plugin.pdb"
-                  )
+                  # PowerToys dependencies are automatically removed by MSBuild Target in .csproj
+                  # Verify they were removed
+                  Write-Host "Verifying clean output..."
+                  $powerToysFiles = Get-ChildItem -Path "$artifactDir/Radio" -Filter "PowerToys*.dll" -File -ErrorAction SilentlyContinue
+                  $woxFiles = Get-ChildItem -Path "$artifactDir/Radio" -Filter "Wox*.dll" -File -ErrorAction SilentlyContinue
 
-                  foreach ($file in $unnecessaryFiles) {
-                    $filePath = "$artifactDir/Radio/$file"
-                    if (Test-Path $filePath) {
-                      Remove-Item $filePath -Force
-                      Write-Host "Removed: $file"
-                    }
+                  if ($powerToysFiles -or $woxFiles) {
+                    Write-Warning "Found unexpected PowerToys/Wox files - removing them"
+                    $powerToysFiles | Remove-Item -Force
+                    $woxFiles | Remove-Item -Force
+                  } else {
+                    Write-Host "✓ Clean build - no PowerToys dependencies found"
                   }
               shell: pwsh
 
