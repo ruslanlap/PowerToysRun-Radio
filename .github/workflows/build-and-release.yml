@@ -134,6 +134,8 @@ jobs:
                     "PowerToys.Settings.UI.Lib.dll",
                     "Wox.Infrastructure.dll",
                     "Wox.Plugin.dll",
+                    "Microsoft.Windows.SDK.NET.dll",
+                    "WinRT.Runtime.dll",
                     "PowerToys.Common.UI.pdb",
                     "PowerToys.ManagedCommon.pdb",
                     "PowerToys.Settings.UI.Lib.pdb",

@@ -20,12 +20,16 @@
   </ItemGroup>
 
   <!-- Exclude PowerToys dependencies from being copied to output (they're provided by PowerToys runtime) -->
-  <Target Name="RemovePowerToysDependencies" AfterTargets="Build">
+  <Target Name="RemovePowerToysDependencies" AfterTargets="Build;Publish">
     <ItemGroup>
-      <FilesToDelete Include="$(OutputPath)\PowerToys.*.dll" />
-      <FilesToDelete Include="$(OutputPath)\Wox.*.dll" />
-      <FilesToDelete Include="$(OutputPath)\PowerToys.*.pdb" />
-      <FilesToDelete Include="$(OutputPath)\Wox.*.pdb" />
+      <FilesToDelete Include="$(TargetDir)PowerToys.*.dll" />
+      <FilesToDelete Include="$(TargetDir)Wox.*.dll" />
+      <FilesToDelete Include="$(TargetDir)PowerToys.*.pdb" />
+      <FilesToDelete Include="$(TargetDir)Wox.*.pdb" />
+      <FilesToDelete Include="$(TargetDir)Microsoft.Windows.SDK.NET.dll" />
+      <FilesToDelete Include="$(TargetDir)WinRT.Runtime.dll" />
+      <FilesToDelete Include="$(TargetDir)Microsoft.Windows.SDK.NET.pdb" />
+      <FilesToDelete Include="$(TargetDir)WinRT.Runtime.pdb" />
     </ItemGroup>
     <Delete Files="@(FilesToDelete)" />
     <Message Text="Removed PowerToys runtime dependencies from output" Importance="high" />
