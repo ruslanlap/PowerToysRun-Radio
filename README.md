@@ -352,22 +352,6 @@ radio [very long text over 200 characters...]  # Too long
 
 ---
 
-## 🛠️ For Developers
-
-<div align="center">
-
-**Plugin Flow:**
-
-1. 🔍 User enters search query
-2. 🌐 Plugin tries multiple API mirrors
-3. 📡 Fetches station data with metadata
-4. 📊 Displays results with rich info
-5. ▶️ Launches media player on selection
-
-</div>
-
----
-
 ### 🧪 Tech Stack
 
 - **Runtime**: .NET 9.0 for Windows 10.0.22621.0+
