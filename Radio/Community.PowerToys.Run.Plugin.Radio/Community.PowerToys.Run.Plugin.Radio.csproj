@@ -16,7 +16,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Community.PowerToys.Run.Plugin.Dependencies" Version="0.93.0" />
+    <PackageReference Include="Community.PowerToys.Run.Plugin.Dependencies" Version="0.93.0">
+      <PrivateAssets>all</PrivateAssets>
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
