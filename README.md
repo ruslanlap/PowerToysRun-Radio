@@ -52,6 +52,17 @@ _Search results with bitrate, codec, country, and tags_
 
 ---
 
+**⬇️ Ready to boost your productivity?**
+
+  <a href="https://github.com/ruslanlap/PowerToysRun-Radio/releases/latest/download/Radio-1.0.0-x64.zip">
+    <img src="https://img.shields.io/badge/Download_for-x64_Windows-0078d4?style=for-the-badge&logo=windows&logoColor=white" alt="Download x64">
+  </a>
+  <a href="https://github.com/ruslanlap/PowerToysRun-Radio/releases/latest/download/Radio-1.0.0-ARM64.zip">
+    <img src="https://img.shields.io/badge/Download_for-ARM64_Windows-0078d4?style=for-the-badge&logo=windows&logoColor=white" alt="Download ARM64">
+  </a>
+</div>
+---
+
 ## 🎨 Plugin Icons
 
 <div align="center">
@@ -76,16 +87,6 @@ The plugin automatically adapts to your PowerToys theme:
 </div>
 
 ---
-
-**⬇️ Ready to boost your productivity?**
-
-  <a href="https://github.com/ruslanlap/PowerToysRun-Radio/releases/latest/download/Radio-1.0.0-x64.zip">
-    <img src="https://img.shields.io/badge/Download_for-x64_Windows-0078d4?style=for-the-badge&logo=windows&logoColor=white" alt="Download x64">
-  </a>
-  <a href="https://github.com/ruslanlap/PowerToysRun-Radio/releases/latest/download/Radio-1.0.0-ARM64.zip">
-    <img src="https://img.shields.io/badge/Download_for-ARM64_Windows-0078d4?style=for-the-badge&logo=windows&logoColor=white" alt="Download ARM64">
-  </a>
-</div>
 
 ## 🧭 Table of Contents
 
