@@ -10,6 +10,5 @@
   "ExecuteFileName": "Community.PowerToys.Run.Plugin.Radio.dll",
   "IcoPathDark": "Images\\radio.dark.png",
   "IcoPathLight": "Images\\radio.light.png",
-  "DynamicLoading": true,
   "Description": "Search and play internet radio stations by city or genre using Radio Browser API"
 }
