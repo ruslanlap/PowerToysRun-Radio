@@ -9,31 +9,15 @@
     <PlatformTarget>$(Platform)</PlatformTarget>
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
     <PublishSingleFile>false</PublishSingleFile>
     <PrivateAssets>None</PrivateAssets>
     <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Community.PowerToys.Run.Plugin.Dependencies" Version="0.93.0" />
+    <PackageReference Include="Community.PowerToys.Run.Plugin.Dependencies" Version="0.93.0" ExcludeAssets="runtime" />
   </ItemGroup>
-
-  <!-- Exclude PowerToys dependencies from being copied to output (they're provided by PowerToys runtime) -->
-  <Target Name="RemovePowerToysDependencies" AfterTargets="Build;Publish">
-    <ItemGroup>
-      <FilesToDelete Include="$(TargetDir)PowerToys.*.dll" />
-      <FilesToDelete Include="$(TargetDir)Wox.*.dll" />
-      <FilesToDelete Include="$(TargetDir)PowerToys.*.pdb" />
-      <FilesToDelete Include="$(TargetDir)Wox.*.pdb" />
-      <FilesToDelete Include="$(TargetDir)Microsoft.Windows.SDK.NET.dll" />
-      <FilesToDelete Include="$(TargetDir)WinRT.Runtime.dll" />
-      <FilesToDelete Include="$(TargetDir)Microsoft.Windows.SDK.NET.pdb" />
-      <FilesToDelete Include="$(TargetDir)WinRT.Runtime.pdb" />
-    </ItemGroup>
-    <Delete Files="@(FilesToDelete)" />
-    <Message Text="Removed PowerToys runtime dependencies from output" Importance="high" />
-  </Target>
 
   <ItemGroup>
     <None Include="plugin.json">
