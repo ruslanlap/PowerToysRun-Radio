@@ -229,8 +229,8 @@ To remove the plugin:
 
 Choose your architecture from [Latest Releases](https://github.com/ruslanlap/PowerToysRun-Radio/releases/latest):
 
-- `Radio-1.0.0-x64.zip` (~6 MB)
-- `Radio-1.0.0-ARM64.zip` (~6 MB)
+- `Radio-1.0.0-x64.zip`
+- `Radio-1.0.0-ARM64.zip`
 
 ### 2️⃣ **Extract to plugins directory** (30 seconds)
 
