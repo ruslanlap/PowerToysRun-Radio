@@ -8,7 +8,7 @@ using Community.PowerToys.Run.Plugin.Radio.Logging;
 
 namespace Community.PowerToys.Run.Plugin.Radio.Storage
 {
-    internal sealed class FavoriteService
+    public sealed class FavoriteService
     {
         private readonly string _filePath;
         private readonly ILogger _logger;

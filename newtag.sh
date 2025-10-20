@@ -3,16 +3,35 @@
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
+# --- Argument Parsing ---
+REBUILD=false
+TAG=""
+
+# Parse arguments
+for arg in "$@"
+do
+    case $arg in
+        --rebuild)
+        REBUILD=true
+        shift # Remove --rebuild from processing
+        ;;
+        *)
+        TAG="$arg"
+        ;;
+    esac
+done
+
 # Check if a tag version is provided
-if [ -z "$1" ]; then
+if [ -z "$TAG" ]; then
   echo "Error: No tag version provided."
-  echo "Usage: ./newtag.sh <version>"
+  echo "Usage: ./newtag.sh [--rebuild] <version>"
   exit 1
 fi
 
-TAG=$1
+# --- Pre-flight Checks ---
 
-# Check for uncommitted changes and stash them if they exist
+# Stash uncommitted changes if they exist
+STASHED=false
 if ! git diff-index --quiet HEAD --; then
     echo "Uncommitted changes detected. Stashing them automatically."
     git stash push -m "Auto-stash before tagging $TAG"
@@ -29,11 +48,25 @@ if [ -n "$(git log @{u}..)" ]; then
     exit 1
 fi
 
+# --- Tagging Logic ---
+
+# If --rebuild is used, delete the existing tag first
+if [ "$REBUILD" = true ]; then
+    echo "Rebuild flag detected. Deleting existing tag '$TAG'."
+    # Delete local tag (ignore error if it doesn't exist)
+    git tag -d "$TAG" || true
+    # Delete remote tag (ignore error if it doesn't exist)
+    git push origin --delete "$TAG" || true
+    echo "Existing tag '$TAG' deleted locally and remotely."
+fi
+
 echo "Creating new tag: $TAG"
 git tag "$TAG"
 
 echo "Pushing new tag: $TAG"
 git push origin "$TAG"
+
+# --- Cleanup ---
 
 # If we stashed changes, pop them back
 if [ "$STASHED" = true ]; then
@@ -41,4 +74,4 @@ if [ "$STASHED" = true ]; then
     git stash pop
 fi
 
-echo "Done! Tag $TAG has been created and pushed."
+echo "Done! Tag $TAG has been successfully created and pushed."
