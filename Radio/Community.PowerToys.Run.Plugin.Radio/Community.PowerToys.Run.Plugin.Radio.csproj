@@ -13,10 +13,10 @@
     <PublishSingleFile>false</PublishSingleFile>
     <PrivateAssets>None</PrivateAssets>
     <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
-        <RootNamespace>Community.PowerToys.Run.Plugin.VideoDownloader</RootNamespace>
-    <AssemblyName>Community.PowerToys.Run.Plugin.VideoDownloader</AssemblyName>
-    <AssemblyTitle>Community.PowerToys.Run.Plugin.VideoDownloader</AssemblyTitle>
-    <AssemblyDescription>PowerToys Run plugin for downloading videos</AssemblyDescription>
+        <RootNamespace>Community.PowerToys.Run.Plugin.Radio</RootNamespace>
+    <AssemblyName>Community.PowerToys.Run.Plugin.Radio</AssemblyName>
+    <AssemblyTitle>Community.PowerToys.Run.Plugin.Radio</AssemblyTitle>
+    <AssemblyDescription>PowerToys Run plugin for listen Radio from power Toys</AssemblyDescription>
     <Copyright>Copyright © 2025</Copyright>
     <AssemblyVersion>1.1.0</AssemblyVersion>
     <FileVersion>1.1.0</FileVersion>

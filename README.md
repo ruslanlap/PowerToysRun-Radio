@@ -549,7 +549,7 @@ Released under [MIT License](LICENSE). Free to use for personal and commercial p
 <br>Radio Stations
 </td>
 <td align="center">
-<img width="50" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Globe%20showing%20Americas/3D/globe_showing_americas_3d.png">
+<img width="50" src="https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Globe%20with%20meridians/3D/globe_with_meridians_3d.png">
 <br><b>200+</b>
 <br>Countries
 </td>
