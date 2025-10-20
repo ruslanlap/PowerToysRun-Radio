@@ -54,10 +54,10 @@ _Search results with bitrate, codec, country, and tags_
 
 **⬇️ Ready to boost your productivity?**
 
-  <a href="https://github.com/ruslanlap/PowerToysRun-Radio/releases/latest/download/Radio-1.0.0-x64.zip">
+  <a href="https://github.com/ruslanlap/PowerToysRun-Radio/releases/latest/download/Radio-1.1.0-x64.zip">
     <img src="https://img.shields.io/badge/Download_for-x64_Windows-0078d4?style=for-the-badge&logo=windows&logoColor=white" alt="Download x64">
   </a>
-  <a href="https://github.com/ruslanlap/PowerToysRun-Radio/releases/latest/download/Radio-1.0.0-ARM64.zip">
+  <a href="https://github.com/ruslanlap/PowerToysRun-Radio/releases/latest/download/Radio-1.1.0-ARM64.zip">
     <img src="https://img.shields.io/badge/Download_for-ARM64_Windows-0078d4?style=for-the-badge&logo=windows&logoColor=white" alt="Download ARM64">
   </a>
 </div>
@@ -159,6 +159,19 @@ The plugin automatically adapts to your PowerToys theme:
 
 ---
 
+## 📜 Changelog
+
+### v1.1.0
+- **Code Refactoring**: Improved code structure by separating query handling and context menu creation into dedicated classes (`QueryHandler` and `ContextMenuFactory`). This enhances maintainability and separation of concerns.
+- **Build Process**: Updated the release script (`newtag.sh`) to streamline the process of creating and rebuilding tags, making releases more reliable.
+- **API Change**: Made `FavoriteService` public to support the new refactored architecture.
+
+### v1.0.0
+- Initial release of the Radio plugin.
+- Core features include searching for radio stations, displaying results with metadata, and playing stations in the default media player.
+
+---
+
 ### Support Development ☕
 
 [![Buy me a coffee](https://img.shields.io/badge/Buy_me_a_coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://ruslanlap.github.io/ruslanlap_buymeacoffe/)
@@ -178,8 +191,8 @@ The plugin automatically adapts to your PowerToys theme:
 1. **Download the plugin**
     - Visit the [latest release](https://github.com/ruslanlap/PowerToysRun-Radio/releases/latest)
     - Download the appropriate ZIP file for your system:
-        - `Radio-1.0.0-x64.zip` for 64-bit Windows
-        - `Radio-1.0.0-ARM64.zip` for ARM64 Windows
+        - `Radio-1.1.0-x64.zip` for 64-bit Windows
+        - `Radio-1.1.0-ARM64.zip` for ARM64 Windows
 
 2. **Extract to PowerToys Run plugins directory**
 
@@ -229,8 +242,8 @@ To remove the plugin:
 
 Choose your architecture from [Latest Releases](https://github.com/ruslanlap/PowerToysRun-Radio/releases/latest):
 
-- `Radio-1.0.0-x64.zip`
-- `Radio-1.0.0-ARM64.zip`
+- `Radio-1.1.0-x64.zip`
+- `Radio-1.1.0-ARM64.zip`
 
 ### 2️⃣ **Extract to plugins directory** (30 seconds)
 
@@ -572,7 +585,7 @@ Released under [MIT License](LICENSE). Free to use for personal and commercial p
 
 ---
 
-**See also:** [🎯 Quick Start](RADIO_README.md) • [📝 Troubleshooting](TROUBLESHOOTING.md) • [🐛 Bug Reports](https://github.com/ruslanlap/PowerToysRun-Radio/issues)
+**See also:** [📝 Troubleshooting](TROUBLESHOOTING.md) • [🐛 Bug Reports](https://github.com/ruslanlap/PowerToysRun-Radio/issues)
 
 <sub>Made with ❤️ for the global community</sub>
 
