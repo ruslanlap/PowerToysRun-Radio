@@ -33,7 +33,7 @@ Search and play radio stations directly from PowerToys Run → `Alt+Space` → `
 
 ### 🚀 **Quick Demo** - Try it now
 
-```
+```estella.ua@gmail.com
 Alt+Space → radio lviv              # 🇺🇦 Ukrainian stations
 Alt+Space → radio bbc               # 🌍 BBC Radio
 Alt+Space → radio jazz              # 🎵 Jazz stations
@@ -162,11 +162,13 @@ The plugin automatically adapts to your PowerToys theme:
 ## 📜 Changelog
 
 ### v1.1.0
+
 - **Code Refactoring**: Improved code structure by separating query handling and context menu creation into dedicated classes (`QueryHandler` and `ContextMenuFactory`). This enhances maintainability and separation of concerns.
 - **Build Process**: Updated the release script (`newtag.sh`) to streamline the process of creating and rebuilding tags, making releases more reliable.
 - **API Change**: Made `FavoriteService` public to support the new refactored architecture.
 
 ### v1.0.0
+
 - Initial release of the Radio plugin.
 - Core features include searching for radio stations, displaying results with metadata, and playing stations in the default media player.
 

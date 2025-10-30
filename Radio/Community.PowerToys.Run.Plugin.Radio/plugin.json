@@ -4,7 +4,7 @@
   "IsGlobal": false,
   "Name": "Radio",
   "Author": "ruslanlap",
-  "Version": "1.0.1",
+  "Version": "1.1.0",
   "Language": "csharp",
   "Website": "https://github.com/ruslanlap/PowerToysRun-Radio",
   "ExecuteFileName": "Community.PowerToys.Run.Plugin.Radio.dll",
