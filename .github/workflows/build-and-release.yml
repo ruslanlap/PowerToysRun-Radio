@@ -127,6 +127,15 @@ jobs:
                     Copy-Item -Path $imagesSrc -Destination "$artifactDir/Radio/Images" -Recurse -Force
                   }
 
+                  # Ensure plugin.json is copied (should be from build output, but explicitly copy as fallback)
+                  $pluginJsonSrc = "Radio/Community.PowerToys.Run.Plugin.Radio/plugin.json"
+                  if (Test-Path $pluginJsonSrc) {
+                    $pluginJsonDest = "$artifactDir/Radio/plugin.json"
+                    if (-not (Test-Path $pluginJsonDest)) {
+                      Copy-Item -Path $pluginJsonSrc -Destination $pluginJsonDest -Force
+                    }
+                  }
+
                   # Remove unnecessary files in a single operation
                   $unnecessaryFiles = @(
                     "PowerToys.Common.UI.dll",
